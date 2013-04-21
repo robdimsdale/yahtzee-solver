@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee;
+package com.rmd.personal.yahtzee.core;
 
 import org.junit.Test;
 
@@ -54,5 +54,25 @@ public class ScoreTypeTest {
     public void getXOfAKindFromIntReturnsYahtzeeCorrectly() {
         // Act & Assert
         assertEquals(ScoreType.YAHTZEE, ScoreType.getXOfAKindFromInt(5)); // SUPPRESS CHECKSTYLE magicNumber
+    }
+
+    @Test
+    public void displayNameReturnsNonEmptyValueForAllTypes() throws Exception {
+        // Act & Assert
+        for (ScoreType scoreType : ScoreType.values()) {
+            String displayName = scoreType.displayName();
+            assertNotNull(displayName);
+            assertTrue(displayName.length() > 0);
+        }
+    }
+
+    @Test
+    public void shortDisplayNameReturnsNonEmptyValueForAllTypes() throws Exception {
+        // Act & Assert
+        for (ScoreType scoreType : ScoreType.values()) {
+            String shortDisplayName = scoreType.shortDisplayName();
+            assertNotNull(shortDisplayName);
+            assertTrue(shortDisplayName.length() > 0);
+        }
     }
 }

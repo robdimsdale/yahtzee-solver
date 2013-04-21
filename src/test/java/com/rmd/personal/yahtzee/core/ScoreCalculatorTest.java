@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee;
+package com.rmd.personal.yahtzee.core;
 
 import org.junit.Test;
 
@@ -176,6 +176,6 @@ public class ScoreCalculatorTest {
         assertEquals(6, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.ONES, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(2, scores.get(3).getScoreValue());
+        assertEquals(2, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
     }
 }

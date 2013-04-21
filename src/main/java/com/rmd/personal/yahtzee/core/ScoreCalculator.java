@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee;
+package com.rmd.personal.yahtzee.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ScoreCalculator {
 
-    private static final int VALID_NUMBER_OF_DICE = 5;
+    private static final int VALID_NUMBER_OF_DICE = DiceRoll.NUMBER_OF_DICE;
     private static final int MAXIMUM_DICE_VALUE = 6;
 
     public static final int YAHTZEE_INITIAL_SCORE_VALUE = 50;
@@ -120,17 +120,24 @@ public class ScoreCalculator {
         return score;
     }
 
-    public boolean isLongStraight(int[] diceValues) {
-        Arrays.sort(diceValues);
-        for (int i = 1; i < diceValues.length; i++) {
-            if (diceValues[i] != diceValues[i - 1] + 1) {
+    private boolean isLongStraight(int[] diceValues) {
+        int[] strippedArray = stripDuplicates(diceValues);
+        Arrays.sort(strippedArray);
+
+        final int minimumDiceRequiredForLongStraight = 5;
+        if (strippedArray.length < minimumDiceRequiredForLongStraight) {
+            return false;
+        }
+
+        for (int i = 1; i < strippedArray.length; i++) {
+            if (strippedArray[i] != strippedArray[i - 1] + 1) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isShortStraight(int[] diceValues) {
+    private boolean isShortStraight(int[] diceValues) {
         int[] strippedArray = stripDuplicates(diceValues);
         Arrays.sort(strippedArray);
 
