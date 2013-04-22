@@ -108,7 +108,9 @@ public final class YahtzeeMain {
         stringBuilder.append(tabAsDashes);
         stringBuilder.append(tabAsDashes);
         stringBuilder.append("|---");
-        stringBuilder.append("-------------------------------------------------");
+        for (int i = 0; i < ScoreType.values().length; i++) {
+            stringBuilder.append(tabAsDashes);
+        }
         System.out.println(stringBuilder.toString());
     }
 

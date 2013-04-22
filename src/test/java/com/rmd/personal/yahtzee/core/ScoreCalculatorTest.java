@@ -59,16 +59,19 @@ public class ScoreCalculatorTest {
         // Act
         List<Score> scores = scoreCalculator.calculateScoreValues(1, 1, 2, 2, 3); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(3, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.TWOS, scores.get(0).getScoreType());
-        assertEquals(4, scores.get(0).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.CHANCE, scores.get(0).getScoreType());
+        assertEquals(9, scores.get(0).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.THREES, scores.get(1).getScoreType());
-        assertEquals(3, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.TWOS, scores.get(1).getScoreType());
+        assertEquals(4, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.ONES, scores.get(2).getScoreType());
-        assertEquals(2, scores.get(2).getScoreValue());
+        assertEquals(ScoreType.THREES, scores.get(2).getScoreType());
+        assertEquals(3, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+
+        assertEquals(ScoreType.ONES, scores.get(3).getScoreType());
+        assertEquals(2, scores.get(3).getScoreValue());
     }
 
     @Test
@@ -126,8 +129,8 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesFourOfAKindWhenValid() {
         // Act
-        Score score1 = (scoreCalculator.calculateScoreValues(2, 2, 2, 1, 2)).get(0); // SUPPRESS CHECKSTYLE magicNumber
-        Score score2 = (scoreCalculator.calculateScoreValues(3, 2, 2, 2, 2)).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score1 = (scoreCalculator.calculateScoreValues(2, 2, 2, 1, 2)).get(1);
+        Score score2 = (scoreCalculator.calculateScoreValues(3, 2, 2, 2, 2)).get(1); // SUPPRESS CHECKSTYLE magicNumber
 
         // Assert
         assertEquals(ScoreType.FOUR_OF_A_KIND, score1.getScoreType());
@@ -143,19 +146,22 @@ public class ScoreCalculatorTest {
         List<Score> scores = (scoreCalculator.calculateScoreValues(2, 2, 2, 2, 2));
 
         // Assert
-        assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.YAHTZEE, scores.get(0).getScoreType());
         assertEquals(ScoreCalculator.YAHTZEE_INITIAL_SCORE_VALUE, scores.get(0).getScoreValue());
 
-        assertEquals(ScoreType.TWOS, scores.get(1).getScoreType());
+        assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
         assertEquals(10, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.FOUR_OF_A_KIND, scores.get(2).getScoreType());
+        assertEquals(ScoreType.TWOS, scores.get(2).getScoreType());
         assertEquals(10, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.FOUR_OF_A_KIND, scores.get(3).getScoreType());
         assertEquals(10, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+
+        assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(10, scores.get(4).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
     }
 
     @Test
@@ -164,18 +170,21 @@ public class ScoreCalculatorTest {
         List<Score> scores = (scoreCalculator.calculateScoreValues(2, 1, 2, 2, 1));
 
         // Assert
-        assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.FULL_HOUSE, scores.get(0).getScoreType());
         assertEquals(ScoreCalculator.FULL_HOUSE_SCORE_VALUE, scores.get(0).getScoreValue());
 
-        assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(1).getScoreType());
+        assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
         assertEquals(8, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.TWOS, scores.get(2).getScoreType());
-        assertEquals(6, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(2).getScoreType());
+        assertEquals(8, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.ONES, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(2, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.TWOS, scores.get(3).getScoreType());
+        assertEquals(6, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+
+        assertEquals(ScoreType.ONES, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(2, scores.get(4).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
     }
 }

@@ -49,6 +49,8 @@ public class ScoreCalculator {
             scores.add(sumDiceValue(i, diceValues));
         }
 
+        scores.add(chanceScore(diceValues));
+
         List<Score> prunedScores = pruneEmptyScores(scores);
 
         Collections.sort(prunedScores);
@@ -187,5 +189,9 @@ public class ScoreCalculator {
             }
         }
         return new Score(ScoreType.getSingleCountFromInt(valueOfInterest), sum);
+    }
+
+    private Score chanceScore(int[] diceValues) {
+        return  new Score(ScoreType.CHANCE, sumAllDiceValues(diceValues));
     }
 }

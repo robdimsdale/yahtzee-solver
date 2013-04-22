@@ -14,7 +14,9 @@ public enum ScoreType {
     FOUR_OF_A_KIND("Four of a kind", "4X"),
     SHORT_STRAIGHT("Short straight", "SS"),
     LONG_STRAIGHT("Long straight", "LS"),
-    YAHTZEE("Yahtzee", "5X");
+    YAHTZEE("Yahtzee", "5X"),
+
+    CHANCE("Chance", "CH");
 
     private ScoreType(String displayName, String shortDisplayName) {
         this.displayName = displayName;
