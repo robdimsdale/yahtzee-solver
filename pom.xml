@@ -15,8 +15,10 @@
     <junit.version>4.11</junit.version>
     <findbugs-maven-plugin.version>2.5.2</findbugs-maven-plugin.version>
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-checkstyle-plugin.version>2.10</maven-checkstyle-plugin.version>
     <cobertura-maven-plugin.version>2.5.2</cobertura-maven-plugin.version>
+    <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
 
     <coverageTarget>90</coverageTarget>
 
@@ -41,7 +43,7 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
 
@@ -100,6 +102,20 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <mainClass>${project.groupId}.${project.artifactId}.main.YahtzeeMain</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
