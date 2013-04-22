@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ScoreCalculator {
+public final class ScoreCalculator {
+
+    private static final ScoreCalculator INSTANCE = new ScoreCalculator();
 
     private static final int VALID_NUMBER_OF_DICE = DiceRoll.NUMBER_OF_DICE;
     private static final int MAXIMUM_DICE_VALUE = 6;
@@ -23,6 +25,13 @@ public class ScoreCalculator {
     private static final int NUMBER_OF_DICE_REQUIRED_FOR_THREE_OF_A_KIND = 3;
     private static final int NUMBER_OF_DICE_REQUIRED_FOR_FOUR_OF_A_KIND = 4;
     private static final int NUMBER_OF_DICE_REQUIRED_FOR_YAHTZEE = 5;
+
+    private ScoreCalculator() {
+    }
+
+    public static ScoreCalculator getInstance() {
+        return INSTANCE;
+    }
 
     public List<Score> calculateScoreValues(int... diceValues) {
         if (diceValues == null || diceValues.length != VALID_NUMBER_OF_DICE) {

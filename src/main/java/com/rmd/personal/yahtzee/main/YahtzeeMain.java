@@ -6,65 +6,43 @@ import com.rmd.personal.yahtzee.core.ScoreCalculator;
 import com.rmd.personal.yahtzee.core.ScoreType;
 
 import java.text.DecimalFormat;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class YahtzeeMain {
 
-    private Map<DiceRoll, Integer> possibleDiceRollsFrequency = new LinkedHashMap<DiceRoll, Integer>();
-    private ScoreTable scoreTable = new ScoreTable();
-
-    private ScoreCalculator scoreCalculator = new ScoreCalculator();
-
     private static final DecimalFormat TWO_DP_DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-    private YahtzeeMain() {
-        populatePossibleDiceValues();
-    }
+    private ScoreCalculator scoreCalculator;
+    private MainScoreHelper scoreHelper;
 
-    private Map<DiceRoll, Integer> getPossibleDiceRollsFrequency() {
-        return possibleDiceRollsFrequency;
+    private YahtzeeMain() {
+        scoreCalculator = ScoreCalculator.getInstance();
+        scoreHelper = MainScoreHelper.getInstance();
     }
 
     private ScoreCalculator getScoreCalculator() {
         return scoreCalculator;
     }
 
-    private ScoreTable getScoreTable() {
-        return scoreTable;
+    private MainScoreHelper getScoreHelper() {
+        return scoreHelper;
     }
 
     public static void main(String[] args) {
         YahtzeeMain yahtzeeMain = new YahtzeeMain();
-        yahtzeeMain.printScoreTableHeader();
         yahtzeeMain.printScoreTable();
-        yahtzeeMain.printScoreTableRowDivider();
-        yahtzeeMain.printScoreTableHeaderRowTwo();
-        yahtzeeMain.printScoreTableRowDivider();
 
         System.out.println();
 
-        for (ScoreType scoreType : ScoreType.values()) {
-            System.out.println(scoreType.displayName() + " average: "
-                    + TWO_DP_DECIMAL_FORMAT.format(
-                            MainScoreHelper.getAverageForScoreType(
-                                    scoreType,
-                                    false,
-                                    yahtzeeMain.getPossibleDiceRollsFrequency(),
-                                    yahtzeeMain.getScoreTable())));
-        }
+        yahtzeeMain.printAverages();
+    }
 
-        System.out.println("\nExcluding zero-scoring rolls:");
-        for (ScoreType scoreType : ScoreType.values()) {
-            System.out.println(scoreType.displayName() + " average: "
-                    + TWO_DP_DECIMAL_FORMAT.format(
-                            MainScoreHelper.getAverageForScoreType(
-                                    scoreType,
-                                    true,
-                                    yahtzeeMain.getPossibleDiceRollsFrequency(),
-                                    yahtzeeMain.getScoreTable())));
-        }
+    private void printScoreTable() {
+        printScoreTableHeader();
+        printScoreTableBody();
+        printScoreTableRowDivider();
+        printScoreTableHeaderRowTwo();
+        printScoreTableRowDivider();
     }
 
     private void printScoreTableHeader() {
@@ -114,17 +92,17 @@ public final class YahtzeeMain {
         System.out.println(stringBuilder.toString());
     }
 
-    private void printScoreTable() {
+    private void printScoreTableBody() {
         StringBuilder stringBuilder = new StringBuilder();
 
         int i = 0;
-        for (DiceRoll diceRoll : getPossibleDiceRollsFrequency().keySet()) {
+        for (DiceRoll diceRoll : MainScoreHelper.getPossibleDiceRollsMappedToFrequency().keySet()) {
             for (int diceValue : diceRoll.getDiceValues()) {
                 stringBuilder.append("\t");
                 stringBuilder.append(diceValue);
             }
             stringBuilder.append("\t");
-            int diceRolls = getPossibleDiceRollsFrequency().get(diceRoll);
+            int diceRolls = MainScoreHelper.getPossibleDiceRollsMappedToFrequency().get(diceRoll);
 
             final int tripleDigits = 100;
             if (diceRolls < tripleDigits) {
@@ -145,16 +123,15 @@ public final class YahtzeeMain {
             List<Score> scores = getScoreCalculator().calculateScoreValues(diceRoll.getDiceValues());
             for (ScoreType scoreType : ScoreType.values()) {
                 stringBuilder.append("\t");
-                Score score = MainScoreHelper.getScoreByTypeFromScoreList(scores, scoreType);
+                Score score = getScoreHelper().getScoreByTypeFromScoreList(scores, scoreType);
                 if (score != null) {
                     stringBuilder.append(score.getScoreValue());
-                    getScoreTable().put(new ScoreTableKey(diceRoll, score.getScoreType()), score.getScoreValue());
                 } else {
                     stringBuilder.append("");
                 }
             }
 
-            if (i < getPossibleDiceRollsFrequency().size() - 1) {
+            if (i < MainScoreHelper.getPossibleDiceRollsMappedToFrequency().size() - 1) {
                 stringBuilder.append("\n");
             }
             i++;
@@ -162,26 +139,16 @@ public final class YahtzeeMain {
         System.out.println(stringBuilder.toString());
     }
 
-    private void populatePossibleDiceValues() {
-        int[] startDiceValues = new int[DiceRoll.NUMBER_OF_DICE];
-        for (int i = 0; i < startDiceValues.length; i++) {
-            startDiceValues[i] = 1;
+    private void printAverages() {
+        for (ScoreType scoreType : ScoreType.values()) {
+            System.out.println(scoreType.displayName() + " average: "
+                    + TWO_DP_DECIMAL_FORMAT.format(getScoreHelper().getAverageForScoreType(scoreType, false)));
         }
 
-        int[] endDiceValues = new int[DiceRoll.NUMBER_OF_DICE];
-        for (int i = 0; i < endDiceValues.length; i++) {
-            endDiceValues[i] = MainScoreHelper.MAX_DIE_VALUE;
-        }
-
-        int[] diceValues = startDiceValues;
-        while (MainScoreHelper.getDiceValuesAsInt(diceValues) <= MainScoreHelper.getDiceValuesAsInt(endDiceValues)) {
-            DiceRoll diceRoll = new DiceRoll(diceValues);
-            if (getPossibleDiceRollsFrequency().get(diceRoll) == null) {
-                getPossibleDiceRollsFrequency().put(diceRoll, 1);
-            } else {
-                getPossibleDiceRollsFrequency().put(diceRoll, getPossibleDiceRollsFrequency().get(diceRoll) + 1);
-            }
-            diceValues = MainScoreHelper.getNextDiceValues(diceValues);
+        System.out.println("\nExcluding zero-scoring rolls:");
+        for (ScoreType scoreType : ScoreType.values()) {
+            System.out.println(scoreType.displayName() + " average: "
+                    + TWO_DP_DECIMAL_FORMAT.format(getScoreHelper().getAverageForScoreType(scoreType, true)));
         }
     }
 }

@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class ScoreCalculatorTest {
 
-    private ScoreCalculator scoreCalculator = new ScoreCalculator();
+    private ScoreCalculator scoreCalculator = ScoreCalculator.getInstance();
 
     @Test
     public void throwsExceptionForNullDiceValues() {
@@ -70,8 +70,8 @@ public class ScoreCalculatorTest {
         assertEquals(ScoreType.THREES, scores.get(2).getScoreType());
         assertEquals(3, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.ONES, scores.get(3).getScoreType());
-        assertEquals(2, scores.get(3).getScoreValue());
+        assertEquals(ScoreType.ONES, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(2, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
     }
 
     @Test
@@ -157,7 +157,7 @@ public class ScoreCalculatorTest {
         assertEquals(ScoreType.TWOS, scores.get(2).getScoreType());
         assertEquals(10, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.FOUR_OF_A_KIND, scores.get(3).getScoreType());
+        assertEquals(ScoreType.FOUR_OF_A_KIND, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
         assertEquals(10, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
@@ -181,7 +181,7 @@ public class ScoreCalculatorTest {
         assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(2).getScoreType());
         assertEquals(8, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.TWOS, scores.get(3).getScoreType());
+        assertEquals(ScoreType.TWOS, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
         assertEquals(6, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.ONES, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
