@@ -1,35 +1,27 @@
-package com.rmd.personal.yahtzee.main;
-
-import com.rmd.personal.yahtzee.core.DiceRoll;
-import com.rmd.personal.yahtzee.core.Rules;
-import com.rmd.personal.yahtzee.core.Score;
-import com.rmd.personal.yahtzee.core.ScoreCalculator;
-import com.rmd.personal.yahtzee.core.ScoreTable;
-import com.rmd.personal.yahtzee.core.ScoreTableKey;
-import com.rmd.personal.yahtzee.core.ScoreType;
+package com.rmd.personal.yahtzee.core;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class MainScoreHelper {
+public final class ScoreHelper {
 
-    private static final MainScoreHelper INSTANCE = new MainScoreHelper();
+    private static final ScoreHelper INSTANCE = new ScoreHelper();
 
     private static Map<DiceRoll, Integer> possibleDiceRollsMappedToFrequency;
     private static ScoreTable scoreTable;
     private static Map<ScoreType, Double> averagesTable;
     private static Map<ScoreType, Double> averagesTableExcludingZeroScores;
 
-    private MainScoreHelper() {
+    private ScoreHelper() {
         initializeStaticFields();
         populatePossibleDiceValues();
         populateScoreTable();
         populateAveragesTables();
     }
 
-    public static MainScoreHelper getInstance() {
+    public static ScoreHelper getInstance() {
         return INSTANCE;
     }
 

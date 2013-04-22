@@ -11,6 +11,15 @@ public class ScoreCalculatorTest {
     private ScoreCalculator scoreCalculator = ScoreCalculator.getInstance();
 
     @Test
+    public void isSingleton() {
+        // Act
+        ScoreCalculator sameInstance = ScoreCalculator.getInstance();
+
+        // Assert
+        assertEquals(scoreCalculator, sameInstance);
+    }
+
+    @Test
     public void throwsExceptionForNullDiceValues() {
         // Act & Assert
         try {
