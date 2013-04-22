@@ -1,16 +1,16 @@
 package com.rmd.personal.yahtzee.main;
 
 import com.rmd.personal.yahtzee.core.DiceRoll;
-import com.rmd.personal.yahtzee.core.Score;
 import com.rmd.personal.yahtzee.core.ScoreCalculator;
 import com.rmd.personal.yahtzee.core.ScoreType;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 public final class YahtzeeMain {
 
     private static final DecimalFormat TWO_DP_DECIMAL_FORMAT = new DecimalFormat("#.##");
+
+    private static final String TAB_AS_DASHES = "----";
 
     private ScoreCalculator scoreCalculator;
     private MainScoreHelper scoreHelper;
@@ -30,11 +30,14 @@ public final class YahtzeeMain {
 
     public static void main(String[] args) {
         YahtzeeMain yahtzeeMain = new YahtzeeMain();
-        yahtzeeMain.printScoreTable();
 
+        yahtzeeMain.printScoreTable();
         System.out.println();
 
-        yahtzeeMain.printAverages();
+        yahtzeeMain.printScoreTypeAverages();
+        System.out.println();
+
+        yahtzeeMain.printAveragesTable();
     }
 
     private void printScoreTable() {
@@ -46,6 +49,7 @@ public final class YahtzeeMain {
     }
 
     private void printScoreTableHeader() {
+        printScoreTableRowDivider();
         printScoreTableHeaderRowOne();
         printScoreTableHeaderRowTwo();
         printScoreTableRowDivider();
@@ -77,17 +81,16 @@ public final class YahtzeeMain {
     }
 
     private void printScoreTableRowDivider() {
-        final String tabAsDashes = "----";
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(tabAsDashes);
+        stringBuilder.append(TAB_AS_DASHES);
         for (int i = 0; i < DiceRoll.NUMBER_OF_DICE; i++) {
-            stringBuilder.append(tabAsDashes);
+            stringBuilder.append(TAB_AS_DASHES);
         }
-        stringBuilder.append(tabAsDashes);
-        stringBuilder.append(tabAsDashes);
+        stringBuilder.append(TAB_AS_DASHES);
+        stringBuilder.append(TAB_AS_DASHES);
         stringBuilder.append("|---");
         for (int i = 0; i < ScoreType.values().length; i++) {
-            stringBuilder.append(tabAsDashes);
+            stringBuilder.append(TAB_AS_DASHES);
         }
         System.out.println(stringBuilder.toString());
     }
@@ -102,32 +105,30 @@ public final class YahtzeeMain {
                 stringBuilder.append(diceValue);
             }
             stringBuilder.append("\t");
-            int diceRolls = MainScoreHelper.getPossibleDiceRollsMappedToFrequency().get(diceRoll);
+            int possibleCount = MainScoreHelper.getPossibleDiceRollsMappedToFrequency().get(diceRoll);
 
             final int tripleDigits = 100;
-            if (diceRolls < tripleDigits) {
+            if (possibleCount < tripleDigits) {
                 stringBuilder.append(" ");
             }
 
             final int doubleDigits = 10;
-            if (diceRolls < doubleDigits) {
+            if (possibleCount < doubleDigits) {
                 stringBuilder.append(" ");
             }
 
             stringBuilder.append("(");
-            stringBuilder.append(diceRolls);
+            stringBuilder.append(possibleCount);
             stringBuilder.append(")");
 
             stringBuilder.append("\t|");
 
-            List<Score> scores = getScoreCalculator().calculateScoreValues(diceRoll.getDiceValues());
             for (ScoreType scoreType : ScoreType.values()) {
                 stringBuilder.append("\t");
-                Score score = getScoreHelper().getScoreByTypeFromScoreList(scores, scoreType);
+                ScoreTableKey key = new ScoreTableKey(diceRoll, scoreType);
+                Integer score = MainScoreHelper.getScoreTable().get(key);
                 if (score != null) {
-                    stringBuilder.append(score.getScoreValue());
-                } else {
-                    stringBuilder.append("");
+                    stringBuilder.append(score);
                 }
             }
 
@@ -139,16 +140,77 @@ public final class YahtzeeMain {
         System.out.println(stringBuilder.toString());
     }
 
-    private void printAverages() {
+    private void printScoreTypeAverages() {
         for (ScoreType scoreType : ScoreType.values()) {
             System.out.println(scoreType.displayName() + " average: "
-                    + TWO_DP_DECIMAL_FORMAT.format(getScoreHelper().getAverageForScoreType(scoreType, false)));
+                    + TWO_DP_DECIMAL_FORMAT.format(MainScoreHelper.getAveragesTable().get(scoreType)));
         }
 
         System.out.println("\nExcluding zero-scoring rolls:");
         for (ScoreType scoreType : ScoreType.values()) {
             System.out.println(scoreType.displayName() + " average: "
-                    + TWO_DP_DECIMAL_FORMAT.format(getScoreHelper().getAverageForScoreType(scoreType, true)));
+                    + TWO_DP_DECIMAL_FORMAT.format(
+                            MainScoreHelper.getAveragesTableExcludingZeroScores().get(scoreType)));
         }
+    }
+
+    private void printAveragesTable() {
+        System.out.println("Difference from average (excluding zero-score):");
+        printScoreTableHeader();
+        printAveragesTableBody();
+        printScoreTableRowDivider();
+        printScoreTableHeaderRowTwo();
+        printScoreTableRowDivider();
+    }
+
+
+
+    private void printAveragesTableBody() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int i = 0;
+        for (DiceRoll diceRoll : MainScoreHelper.getPossibleDiceRollsMappedToFrequency().keySet()) {
+            for (int diceValue : diceRoll.getDiceValues()) {
+                stringBuilder.append("\t");
+                stringBuilder.append(diceValue);
+            }
+            stringBuilder.append("\t");
+            int possibleCount = MainScoreHelper.getPossibleDiceRollsMappedToFrequency().get(diceRoll);
+
+            final int tripleDigits = 100;
+            if (possibleCount < tripleDigits) {
+                stringBuilder.append(" ");
+            }
+
+            final int doubleDigits = 10;
+            if (possibleCount < doubleDigits) {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append("(");
+            stringBuilder.append(possibleCount);
+            stringBuilder.append(")");
+
+            stringBuilder.append("\t|");
+
+            for (ScoreType scoreType : ScoreType.values()) {
+                stringBuilder.append("\t");
+                ScoreTableKey key = new ScoreTableKey(diceRoll, scoreType);
+                Integer score = MainScoreHelper.getScoreTable().get(key);
+                if (score != null) {
+                    long scoreDiff = Math.round(score - MainScoreHelper.getAveragesTable().get(scoreType));
+                    if (scoreDiff >= 0) {
+                        stringBuilder.append(" ");
+                    }
+                    stringBuilder.append(scoreDiff);
+                }
+            }
+
+            if (i < MainScoreHelper.getPossibleDiceRollsMappedToFrequency().size() - 1) {
+                stringBuilder.append("\n");
+            }
+            i++;
+        }
+        System.out.println(stringBuilder.toString());
     }
 }

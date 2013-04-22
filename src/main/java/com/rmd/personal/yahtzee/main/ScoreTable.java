@@ -2,6 +2,7 @@ package com.rmd.personal.yahtzee.main;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ScoreTable {
 
@@ -17,5 +18,9 @@ public class ScoreTable {
 
     public Integer get(ScoreTableKey key) {
         return getScoreTable().get(key);
+    }
+
+    public Set<ScoreTableKey> keySet() {
+        return getScoreTable().keySet();
     }
 }
