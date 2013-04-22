@@ -81,7 +81,7 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.FULL_HOUSE, score.getScoreType());
-        assertEquals(ScoreCalculator.FULL_HOUSE_SCORE_VALUE, score.getScoreValue());
+        assertEquals(Rules.getFullHouseScoreValue(), score.getScoreValue());
     }
 
     @Test
@@ -92,10 +92,10 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.LONG_STRAIGHT, score1.getScoreType());
-        assertEquals(ScoreCalculator.LONG_STRAIGHT_SCORE_VALUE, score1.getScoreValue());
+        assertEquals(Rules.getLongStraightScoreValue(), score1.getScoreValue());
 
         assertEquals(ScoreType.LONG_STRAIGHT, score2.getScoreType());
-        assertEquals(ScoreCalculator.LONG_STRAIGHT_SCORE_VALUE, score2.getScoreValue());
+        assertEquals(Rules.getLongStraightScoreValue(), score2.getScoreValue());
     }
 
     @Test
@@ -107,13 +107,13 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.SHORT_STRAIGHT, score1.getScoreType());
-        assertEquals(ScoreCalculator.SHORT_STRAIGHT_SCORE_VALUE, score1.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score1.getScoreValue());
 
         assertEquals(ScoreType.SHORT_STRAIGHT, score2.getScoreType());
-        assertEquals(ScoreCalculator.SHORT_STRAIGHT_SCORE_VALUE, score2.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score2.getScoreValue());
 
         assertEquals(ScoreType.SHORT_STRAIGHT, score3.getScoreType());
-        assertEquals(ScoreCalculator.SHORT_STRAIGHT_SCORE_VALUE, score3.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score3.getScoreValue());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.YAHTZEE, score.getScoreType());
-        assertEquals(ScoreCalculator.YAHTZEE_INITIAL_SCORE_VALUE, score.getScoreValue());
+        assertEquals(Rules.getYahtzeeInitialScoreValue(), score.getScoreValue());
     }
 
     @Test
@@ -149,7 +149,7 @@ public class ScoreCalculatorTest {
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.YAHTZEE, scores.get(0).getScoreType());
-        assertEquals(ScoreCalculator.YAHTZEE_INITIAL_SCORE_VALUE, scores.get(0).getScoreValue());
+        assertEquals(Rules.getYahtzeeInitialScoreValue(), scores.get(0).getScoreValue());
 
         assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
         assertEquals(10, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
@@ -173,7 +173,7 @@ public class ScoreCalculatorTest {
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.FULL_HOUSE, scores.get(0).getScoreType());
-        assertEquals(ScoreCalculator.FULL_HOUSE_SCORE_VALUE, scores.get(0).getScoreValue());
+        assertEquals(Rules.getFullHouseScoreValue(), scores.get(0).getScoreValue());
 
         assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
         assertEquals(8, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber

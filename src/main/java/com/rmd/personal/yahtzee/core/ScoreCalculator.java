@@ -13,18 +13,6 @@ public final class ScoreCalculator {
 
     private static final ScoreCalculator INSTANCE = new ScoreCalculator();
 
-    private static final int MAXIMUM_DICE_VALUE = 6;
-
-    public static final int YAHTZEE_INITIAL_SCORE_VALUE = 50;
-
-    public static final int FULL_HOUSE_SCORE_VALUE = 25;
-    public static final int SHORT_STRAIGHT_SCORE_VALUE = 30;
-    public static final int LONG_STRAIGHT_SCORE_VALUE = 40;
-
-    private static final int NUMBER_OF_DICE_REQUIRED_FOR_THREE_OF_A_KIND = 3;
-    private static final int NUMBER_OF_DICE_REQUIRED_FOR_FOUR_OF_A_KIND = 4;
-    private static final int NUMBER_OF_DICE_REQUIRED_FOR_YAHTZEE = 5;
-
     private ScoreCalculator() {
     }
 
@@ -39,22 +27,17 @@ public final class ScoreCalculator {
 
         List<Score> scores = new ArrayList<Score>();
 
-        scores.add(xOfAKindScore(NUMBER_OF_DICE_REQUIRED_FOR_THREE_OF_A_KIND, diceValues));
-        scores.add(xOfAKindScore(NUMBER_OF_DICE_REQUIRED_FOR_FOUR_OF_A_KIND, diceValues));
-        scores.add(xOfAKindScore(NUMBER_OF_DICE_REQUIRED_FOR_YAHTZEE, diceValues));
+        scores.add(xOfAKindScore(Rules.getNumberOfDiceRequiredForThreeOfAKind(), diceValues));
+        scores.add(xOfAKindScore(Rules.getNumberOfDiceRequiredForFourOfAKind(), diceValues));
+        scores.add(xOfAKindScore(Rules.getNumberOfDiceRequiredForYahtzee(), diceValues));
 
-        if (isLongStraight(diceValues)) {
-            scores.add(new Score(ScoreType.LONG_STRAIGHT, LONG_STRAIGHT_SCORE_VALUE));
-        }
-
-        if (isShortStraight(diceValues)) {
-            scores.add(new Score(ScoreType.SHORT_STRAIGHT, SHORT_STRAIGHT_SCORE_VALUE));
-        }
+        scores.add(longStraightScore(diceValues));
+        scores.add(shortStraightScore(diceValues));
 
         scores.add(fullHouseScore(diceValues));
 
-        for (int i = 1; i <= MAXIMUM_DICE_VALUE; i++) {
-            scores.add(sumDiceValue(i, diceValues));
+        for (int i = 1; i <= Rules.getMaxDieValue(); i++) {
+            scores.add(summedSingleValueScore(i, diceValues));
         }
 
         scores.add(chanceScore(diceValues));
@@ -83,8 +66,8 @@ public final class ScoreCalculator {
 
         for (Integer count : diceValueToCountMap.values()) {
             if (count >= numberOfDiceRequired) {
-                if (numberOfDiceRequired == NUMBER_OF_DICE_REQUIRED_FOR_YAHTZEE) {
-                    score.setScoreValue(YAHTZEE_INITIAL_SCORE_VALUE);
+                if (numberOfDiceRequired == Rules.getNumberOfDiceRequiredForYahtzee()) {
+                    score.setScoreValue(Rules.getYahtzeeInitialScoreValue());
                 } else {
                     score.setScoreValue(sumAllDiceValues(diceValues));
                 }
@@ -124,36 +107,39 @@ public final class ScoreCalculator {
         fullHouseCountSet.add(3); // SUPPRESS CHECKSTYLE magicNumber
         if (diceValueCountMap.keySet().size() == 2) {
             if (diceValueCountMap.values().containsAll(fullHouseCountSet)) {
-                score.setScoreValue(FULL_HOUSE_SCORE_VALUE);
+                score.setScoreValue(Rules.getFullHouseScoreValue());
             }
         }
         return score;
     }
 
-    private boolean isLongStraight(int[] diceValues) {
+    private Score longStraightScore(int[] diceValues) {
+        Score score = new Score(ScoreType.LONG_STRAIGHT, 0);
         int[] strippedArray = stripDuplicates(diceValues);
         Arrays.sort(strippedArray);
 
         final int minimumDiceRequiredForLongStraight = 5;
         if (strippedArray.length < minimumDiceRequiredForLongStraight) {
-            return false;
+            return score;
         }
 
         for (int i = 1; i < strippedArray.length; i++) {
             if (strippedArray[i] != strippedArray[i - 1] + 1) {
-                return false;
+                return score;
             }
         }
-        return true;
+        score.setScoreValue(Rules.getLongStraightScoreValue());
+        return score;
     }
 
-    private boolean isShortStraight(int[] diceValues) {
+    private Score shortStraightScore(int[] diceValues) {
+        Score score = new Score(ScoreType.SHORT_STRAIGHT, 0);
         int[] strippedArray = stripDuplicates(diceValues);
         Arrays.sort(strippedArray);
 
         final int minimumDiceRequiredForShortStraight = 4;
         if (strippedArray.length < minimumDiceRequiredForShortStraight) {
-            return false;
+            return score;
         }
 
         boolean isShortStraight1 = true;
@@ -172,7 +158,10 @@ public final class ScoreCalculator {
             }
         }
 
-        return isShortStraight1 || isShortStraight2;
+        if (isShortStraight1 || isShortStraight2) {
+            score.setScoreValue(Rules.getShortStraightScoreValue());
+        }
+        return score;
     }
 
     private int[] stripDuplicates(int[] diceValues) {
@@ -189,7 +178,7 @@ public final class ScoreCalculator {
         return strippedArray;
     }
 
-    private Score sumDiceValue(int valueOfInterest, int[] diceValues) {
+    private Score summedSingleValueScore(int valueOfInterest, int[] diceValues) {
         int sum = 0;
         for (int diceValue : diceValues) {
             if (diceValue == valueOfInterest) {
@@ -200,6 +189,6 @@ public final class ScoreCalculator {
     }
 
     private Score chanceScore(int[] diceValues) {
-        return  new Score(ScoreType.CHANCE, sumAllDiceValues(diceValues));
+        return new Score(ScoreType.CHANCE, sumAllDiceValues(diceValues));
     }
 }

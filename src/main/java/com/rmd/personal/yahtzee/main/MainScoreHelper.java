@@ -29,6 +29,30 @@ public final class MainScoreHelper {
         populateAveragesTables();
     }
 
+    public static MainScoreHelper getInstance() {
+        return INSTANCE;
+    }
+
+    private ScoreCalculator getScoreCalculator() {
+        return ScoreCalculator.getInstance();
+    }
+
+    public static Map<DiceRoll, Integer> getPossibleDiceRollsMappedToFrequency() {
+        return possibleDiceRollsMappedToFrequency;
+    }
+
+    public static ScoreTable getScoreTable() {
+        return scoreTable;
+    }
+
+    public static Map<ScoreType, Double> getAveragesTable() {
+        return averagesTable;
+    }
+
+    public static Map<ScoreType, Double> getAveragesTableExcludingZeroScores() {
+        return averagesTableExcludingZeroScores;
+    }
+
     private static void initializeStaticFields() {
         possibleDiceRollsMappedToFrequency = new LinkedHashMap<DiceRoll, Integer>();
         scoreTable = new ScoreTable();
@@ -77,30 +101,6 @@ public final class MainScoreHelper {
             getAveragesTableExcludingZeroScores().put(scoreType, getAverageForScoreType(scoreType, true));
             getAveragesTable().put(scoreType, getAverageForScoreType(scoreType, false));
         }
-    }
-
-    public static MainScoreHelper getInstance() {
-        return INSTANCE;
-    }
-
-    private ScoreCalculator getScoreCalculator() {
-        return ScoreCalculator.getInstance();
-    }
-
-    public static Map<DiceRoll, Integer> getPossibleDiceRollsMappedToFrequency() {
-        return possibleDiceRollsMappedToFrequency;
-    }
-
-    public static ScoreTable getScoreTable() {
-        return scoreTable;
-    }
-
-    public static Map<ScoreType, Double> getAveragesTable() {
-        return averagesTable;
-    }
-
-    public static Map<ScoreType, Double> getAveragesTableExcludingZeroScores() {
-        return averagesTableExcludingZeroScores;
     }
 
     private Score getScoreByTypeFromScoreList(List<Score> scoreList, ScoreType scoreType) {
