@@ -1,7 +1,9 @@
 package com.rmd.personal.yahtzee.main;
 
 import com.rmd.personal.yahtzee.core.DiceRoll;
+import com.rmd.personal.yahtzee.core.Rules;
 import com.rmd.personal.yahtzee.core.ScoreCalculator;
+import com.rmd.personal.yahtzee.core.ScoreTableKey;
 import com.rmd.personal.yahtzee.core.ScoreType;
 
 import java.text.DecimalFormat;
@@ -12,32 +14,24 @@ public final class YahtzeeMain {
 
     private static final String TAB_AS_DASHES = "----";
 
-    private ScoreCalculator scoreCalculator;
-    private MainScoreHelper scoreHelper;
-
     private YahtzeeMain() {
-        scoreCalculator = ScoreCalculator.getInstance();
-        scoreHelper = MainScoreHelper.getInstance();
-    }
-
-    private ScoreCalculator getScoreCalculator() {
-        return scoreCalculator;
-    }
-
-    private MainScoreHelper getScoreHelper() {
-        return scoreHelper;
+        // Eagerly instantiate the singleton classes.
+        ScoreCalculator.getInstance();
+        MainScoreHelper.getInstance();
     }
 
     public static void main(String[] args) {
-        YahtzeeMain yahtzeeMain = new YahtzeeMain();
+        new YahtzeeMain().run();
+    }
 
-        yahtzeeMain.printScoreTable();
+    private void run() {
+        printScoreTable();
         System.out.println();
 
-        yahtzeeMain.printScoreTypeAverages();
+        printScoreTypeAverages();
         System.out.println();
 
-        yahtzeeMain.printAveragesTable();
+        printAveragesTable();
     }
 
     private void printScoreTable() {
@@ -58,7 +52,7 @@ public final class YahtzeeMain {
     private void printScoreTableHeaderRowOne() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\tDice (count)");
-        for (int i = 0; i < DiceRoll.NUMBER_OF_DICE - 1; i++) {
+        for (int i = 0; i < Rules.getNumberOfDice() - 1; i++) {
             stringBuilder.append("\t");
         }
         stringBuilder.append("|\tScore");
@@ -69,7 +63,7 @@ public final class YahtzeeMain {
     private void printScoreTableHeaderRowTwo() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\t");
-        for (int i = 0; i < DiceRoll.NUMBER_OF_DICE; i++) {
+        for (int i = 0; i < Rules.getNumberOfDice(); i++) {
             stringBuilder.append("\t");
         }
         stringBuilder.append("\t\t|\t");
@@ -83,7 +77,7 @@ public final class YahtzeeMain {
     private void printScoreTableRowDivider() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(TAB_AS_DASHES);
-        for (int i = 0; i < DiceRoll.NUMBER_OF_DICE; i++) {
+        for (int i = 0; i < Rules.getNumberOfDice(); i++) {
             stringBuilder.append(TAB_AS_DASHES);
         }
         stringBuilder.append(TAB_AS_DASHES);
@@ -150,7 +144,7 @@ public final class YahtzeeMain {
         for (ScoreType scoreType : ScoreType.values()) {
             System.out.println(scoreType.displayName() + " average: "
                     + TWO_DP_DECIMAL_FORMAT.format(
-                            MainScoreHelper.getAveragesTableExcludingZeroScores().get(scoreType)));
+                    MainScoreHelper.getAveragesTableExcludingZeroScores().get(scoreType)));
         }
     }
 

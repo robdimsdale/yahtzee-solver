@@ -4,13 +4,7 @@ import java.util.Arrays;
 
 public class DiceRoll {
 
-//    public static final int NUMBER_OF_DICE = 1;
-//    public static final int NUMBER_OF_DICE = 2;
-//    public static final int NUMBER_OF_DICE = 3;
-//    public static final int NUMBER_OF_DICE = 4;
-    public static final int NUMBER_OF_DICE = 5;
-
-    private int[] diceValues = new int[NUMBER_OF_DICE];
+    private int[] diceValues = new int[Rules.getNumberOfDice()];
 
     public DiceRoll(int[] diceValues) {
         this.setDiceValues(diceValues);

@@ -1,8 +1,11 @@
 package com.rmd.personal.yahtzee.main;
 
 import com.rmd.personal.yahtzee.core.DiceRoll;
+import com.rmd.personal.yahtzee.core.Rules;
 import com.rmd.personal.yahtzee.core.Score;
 import com.rmd.personal.yahtzee.core.ScoreCalculator;
+import com.rmd.personal.yahtzee.core.ScoreTable;
+import com.rmd.personal.yahtzee.core.ScoreTableKey;
 import com.rmd.personal.yahtzee.core.ScoreType;
 
 import java.util.HashMap;
@@ -13,12 +16,11 @@ import java.util.Map;
 public final class MainScoreHelper {
 
     private static final MainScoreHelper INSTANCE = new MainScoreHelper();
+
     private static Map<DiceRoll, Integer> possibleDiceRollsMappedToFrequency;
     private static ScoreTable scoreTable;
     private static Map<ScoreType, Double> averagesTable;
     private static Map<ScoreType, Double> averagesTableExcludingZeroScores;
-
-    public static final int MAX_DIE_VALUE = 6;
 
     private MainScoreHelper() {
         initializeStaticFields();
@@ -35,14 +37,14 @@ public final class MainScoreHelper {
     }
 
     private void populatePossibleDiceValues() {
-        int[] startDiceValues = new int[DiceRoll.NUMBER_OF_DICE];
+        int[] startDiceValues = new int[Rules.getNumberOfDice()];
         for (int i = 0; i < startDiceValues.length; i++) {
             startDiceValues[i] = 1;
         }
 
-        int[] endDiceValues = new int[DiceRoll.NUMBER_OF_DICE];
+        int[] endDiceValues = new int[Rules.getNumberOfDice()];
         for (int i = 0; i < endDiceValues.length; i++) {
-            endDiceValues[i] = MainScoreHelper.MAX_DIE_VALUE;
+            endDiceValues[i] = Rules.getMaxDieValue();
         }
 
         int[] diceValues = startDiceValues;
@@ -118,18 +120,18 @@ public final class MainScoreHelper {
         final int n = diceValues.length;
         int diceValueAsInt = 0;
         for (int i = 0; i < n; i++) {
-            diceValueAsInt += (diceValues[i]) * Math.pow(MAX_DIE_VALUE, (n - i - 1));
+            diceValueAsInt += (diceValues[i]) * Math.pow(Rules.getMaxDieValue(), (n - i - 1));
         }
         return diceValueAsInt;
     }
 
     private int[] getDiceValuesFromInt(int diceValuesAsInt) {
         diceValuesAsInt -= minimumValue();
-        final int n = DiceRoll.NUMBER_OF_DICE;
+        final int n = Rules.getNumberOfDice();
         int[] diceValues = new int[n];
 
         for (int i = 0; i < n; i++) {
-            double index = Math.pow(MAX_DIE_VALUE, (n - i - 1));
+            double index = Math.pow(Rules.getMaxDieValue(), (n - i - 1));
             diceValues[i] = (int) Math.floor((double) diceValuesAsInt / index);
             diceValuesAsInt -= diceValues[i] * index;
             diceValues[i] += 1;
@@ -159,7 +161,7 @@ public final class MainScoreHelper {
     }
 
     private int minimumValue() {
-        int[] diceValues = new int[DiceRoll.NUMBER_OF_DICE];
+        int[] diceValues = new int[Rules.getNumberOfDice()];
         for (int i = 0; i < diceValues.length; i++) {
             diceValues[i] = 1;
         }

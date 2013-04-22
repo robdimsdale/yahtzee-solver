@@ -1,6 +1,7 @@
-package com.rmd.personal.yahtzee.main;
+package com.rmd.personal.yahtzee.core;
 
 import com.rmd.personal.yahtzee.core.DiceRoll;
+import com.rmd.personal.yahtzee.core.ScoreTableKey;
 import com.rmd.personal.yahtzee.core.ScoreType;
 import org.junit.Test;
 

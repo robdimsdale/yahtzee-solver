@@ -13,7 +13,6 @@ public final class ScoreCalculator {
 
     private static final ScoreCalculator INSTANCE = new ScoreCalculator();
 
-    private static final int VALID_NUMBER_OF_DICE = DiceRoll.NUMBER_OF_DICE;
     private static final int MAXIMUM_DICE_VALUE = 6;
 
     public static final int YAHTZEE_INITIAL_SCORE_VALUE = 50;
@@ -34,8 +33,8 @@ public final class ScoreCalculator {
     }
 
     public List<Score> calculateScoreValues(int... diceValues) {
-        if (diceValues == null || diceValues.length != VALID_NUMBER_OF_DICE) {
-            throw new IllegalArgumentException("must have " + VALID_NUMBER_OF_DICE + " dice values!");
+        if (diceValues == null || diceValues.length != Rules.getNumberOfDice()) {
+            throw new IllegalArgumentException("must have " + Rules.getNumberOfDice() + " dice values!");
         }
 
         List<Score> scores = new ArrayList<Score>();

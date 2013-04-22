@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee.main;
+package com.rmd.personal.yahtzee.core;
 
 import java.util.HashMap;
 import java.util.Map;
