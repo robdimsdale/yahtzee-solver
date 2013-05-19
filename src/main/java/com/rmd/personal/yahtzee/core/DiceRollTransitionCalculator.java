@@ -14,17 +14,23 @@ public final class DiceRollTransitionCalculator {
     }
 
     public double getTransitionProbability(DiceRoll current, DiceRoll next) {
-        double transitionProbability = 0.0;
         double p = 1 / (double) Rules.getDieFaceCount();
 
-        int n = countDifferent(current, next);
-        if (n == 0) {
+        final int maxN = countDifferent(current, next);
+        if (maxN == 0) {
             return 1;
         }
-        for (int k = 0; k <= n; k++) {
-            transitionProbability += pow(p, n - k) * pow(p * (1 - p), k) * binomialCoefficient(n , k);
-        }
 
+        double transitionProbability = sumProbabilityAtCurrentBranch(p, maxN);
+
+        return transitionProbability * pow(p, maxN);
+    }
+
+    private double sumProbabilityAtCurrentBranch(double p, int maxN) {
+        double transitionProbability = 0.0;
+        for (int n = 0; n <= maxN; n++) {
+            transitionProbability += pow((1 - p), n) * binomialCoefficient(maxN , n);
+        }
         return transitionProbability;
     }
 

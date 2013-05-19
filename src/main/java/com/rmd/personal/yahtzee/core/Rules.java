@@ -12,6 +12,7 @@ public final class Rules {
 
     private static final int NUMBER_OF_DICE = 5;
     private static final int DIE_FACE_COUNT = 6;
+    private static final int DICE_ROLLS_COUNT = 3; // The game will break if this value is 0 or negative.
 
     private Rules() {
     }
@@ -22,6 +23,10 @@ public final class Rules {
 
     public static int getDieFaceCount() {
         return DIE_FACE_COUNT;
+    }
+
+    public static int getDiceRollsCount() {
+        return DICE_ROLLS_COUNT;
     }
 
     public static int getYahtzeeInitialScoreValue() {
