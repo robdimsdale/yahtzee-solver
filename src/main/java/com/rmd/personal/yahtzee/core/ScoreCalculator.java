@@ -36,7 +36,7 @@ public final class ScoreCalculator {
 
         scores.add(fullHouseScore(diceValues));
 
-        for (int i = 1; i <= Rules.getMaxDieValue(); i++) {
+        for (int i = 1; i <= Rules.getDieFaceCount(); i++) {
             scores.add(summedSingleValueScore(i, diceValues));
         }
 

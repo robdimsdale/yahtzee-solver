@@ -60,7 +60,7 @@ public final class ScoreHelper {
 
         int[] endDiceValues = new int[Rules.getNumberOfDice()];
         for (int i = 0; i < endDiceValues.length; i++) {
-            endDiceValues[i] = Rules.getMaxDieValue();
+            endDiceValues[i] = Rules.getDieFaceCount();
         }
 
         int[] diceValues = startDiceValues;
@@ -112,7 +112,7 @@ public final class ScoreHelper {
         final int n = diceValues.length;
         int diceValueAsInt = 0;
         for (int i = 0; i < n; i++) {
-            diceValueAsInt += (diceValues[i]) * Math.pow(Rules.getMaxDieValue(), (n - i - 1));
+            diceValueAsInt += (diceValues[i]) * Math.pow(Rules.getDieFaceCount(), (n - i - 1));
         }
         return diceValueAsInt;
     }
@@ -123,7 +123,7 @@ public final class ScoreHelper {
         int[] diceValues = new int[n];
 
         for (int i = 0; i < n; i++) {
-            double index = Math.pow(Rules.getMaxDieValue(), (n - i - 1));
+            double index = Math.pow(Rules.getDieFaceCount(), (n - i - 1));
             diceValues[i] = (int) Math.floor((double) diceValuesAsInt / index);
             diceValuesAsInt -= diceValues[i] * index;
             diceValues[i] += 1;

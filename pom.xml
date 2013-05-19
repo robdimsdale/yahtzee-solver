@@ -22,9 +22,6 @@
     <mockito-all.version>1.9.5</mockito-all.version>
 
     <coverageTarget>90</coverageTarget>
-
-    <!-- This speeds up site generation by several minutes. See http://blog.andyhot.gr/maven-and-slow-dependencies-report/ -->
-    <dependency.locations.enabled>false</dependency.locations.enabled>
   </properties>
 
   <dependencies>

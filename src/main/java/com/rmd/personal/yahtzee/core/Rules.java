@@ -11,7 +11,7 @@ public final class Rules {
     private static final int NUMBER_OF_DICE_REQUIRED_FOR_YAHTZEE = 5;
 
     private static final int NUMBER_OF_DICE = 5;
-    private static final int MAX_DIE_VALUE = 6;
+    private static final int DIE_FACE_COUNT = 6;
 
     private Rules() {
     }
@@ -20,8 +20,8 @@ public final class Rules {
         return NUMBER_OF_DICE;
     }
 
-    public static int getMaxDieValue() {
-        return MAX_DIE_VALUE;
+    public static int getDieFaceCount() {
+        return DIE_FACE_COUNT;
     }
 
     public static int getYahtzeeInitialScoreValue() {
