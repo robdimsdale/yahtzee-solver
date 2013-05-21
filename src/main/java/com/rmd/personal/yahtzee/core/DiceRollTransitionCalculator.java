@@ -4,6 +4,9 @@ import static java.lang.Math.*;
 
 public final class DiceRollTransitionCalculator {
 
+    private static final double P = 1 / (double) Rules.getDieFaceCount();
+    private static final int X = Rules.getDieFaceCount();
+
     private static final DiceRollTransitionCalculator INSTANCE = new DiceRollTransitionCalculator();
 
     private DiceRollTransitionCalculator() {
@@ -13,25 +16,66 @@ public final class DiceRollTransitionCalculator {
         return INSTANCE;
     }
 
-    public double getTransitionProbability(DiceRoll current, DiceRoll next) {
-        double p = 1 / (double) Rules.getDieFaceCount();
-
+    public double getTransitionProbability(DiceRoll current, DiceRoll next, int remainingRolls) {
         final int maxN = countDifferent(current, next);
+
         if (maxN == 0) {
-            return 1;
+            return 1.0;
         }
 
-        double transitionProbability = sumProbabilityAtCurrentBranch(p, maxN);
+        if (remainingRolls == 0) {
+            return 0.0;
+        }
 
-        return transitionProbability * pow(p, maxN);
+        double summedProbability;
+        if (Rules.getDiceRollsCount() == 1) {
+            summedProbability = 1.0;
+        } else {
+            final int currentDepth = 0;
+            summedProbability = sumProbabilityAtCurrentBranch(maxN, remainingRolls, currentDepth);
+        }
+
+        return summedProbability * pow(P, maxN);
     }
 
-    private double sumProbabilityAtCurrentBranch(double p, int maxN) {
-        double transitionProbability = 0.0;
-        for (int n = 0; n <= maxN; n++) {
-            transitionProbability += pow((1 - p), n) * binomialCoefficient(maxN , n);
+    private double sumProbabilityAtCurrentBranch(int maxN, int remainingRolls, int currentDepth) {
+        currentDepth++;
+        double returnValue = 0.0;
+
+        if (currentDepth >= remainingRolls) {
+            return 1.0;
         }
-        return transitionProbability;
+
+        for (int i = 0; i <= maxN; i++) {
+            double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
+            double subSum = sumProbabilityAtCurrentBranch(i, remainingRolls, currentDepth);
+            returnValue += factor * subSum;
+        }
+
+        return returnValue;
+    }
+
+    private double probabilityForTwoRemaining(int maxN) {
+        double returnValue = 0.0;
+        for (int i = 0; i <= maxN; i++) {
+            double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
+            returnValue += factor;
+        }
+        return returnValue;
+    }
+
+    private double probabilityForThreeRemaining(int maxN) {
+        double returnValue = 0.0;
+        for (int i = 0; i <= maxN; i++) {
+            double factorI = pow(1 - P, i) * binomialCoefficient(maxN, i);
+            double sumJ = 0.0;
+            for (int j = 0; j <= i; j++) {
+                double factorJ = pow(1 - P, j) * binomialCoefficient(i, j);
+                sumJ += factorJ;
+            }
+            returnValue += factorI * sumJ;
+        }
+        return returnValue;
     }
 
     private int countDifferent(DiceRoll current, DiceRoll next) {
