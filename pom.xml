@@ -20,6 +20,7 @@
     <mockito-all.version>1.9.5</mockito-all.version>
 
     <skipFindbugs>false</skipFindbugs>
+    <skipCoverage>false</skipCoverage>
   </properties>
 
   <dependencies>
@@ -93,6 +94,7 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <configuration>
+          <skip>${skipCoverage}</skip>
           <excludes>
             <exclude>**/Main.class</exclude>
           </excludes>
@@ -168,6 +170,7 @@
       </activation>
       <properties>
         <skipFindbugs>true</skipFindbugs>
+        <skipCoverage>true</skipCoverage>
       </properties>
     </profile>
   </profiles>
