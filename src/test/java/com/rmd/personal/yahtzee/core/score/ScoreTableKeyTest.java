@@ -1,5 +1,6 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
 
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

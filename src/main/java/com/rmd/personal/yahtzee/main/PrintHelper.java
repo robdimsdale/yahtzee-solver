@@ -1,10 +1,10 @@
 package com.rmd.personal.yahtzee.main;
 
-import com.rmd.personal.yahtzee.core.DiceRoll;
 import com.rmd.personal.yahtzee.core.Rules;
-import com.rmd.personal.yahtzee.core.ScoreHelper;
-import com.rmd.personal.yahtzee.core.ScoreTableKey;
-import com.rmd.personal.yahtzee.core.ScoreType;
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
+import com.rmd.personal.yahtzee.core.score.ScoreHelper;
+import com.rmd.personal.yahtzee.core.score.ScoreTableKey;
+import com.rmd.personal.yahtzee.core.score.ScoreType;
 
 import java.text.DecimalFormat;
 

@@ -1,5 +1,7 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
 
+import com.rmd.personal.yahtzee.core.Rules;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -70,7 +72,7 @@ public class ScoreCalculatorTest {
 
         assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
-        assertEquals(ScoreType.CHANCE, scores.get(0).getScoreType());
+        Assert.assertEquals(ScoreType.CHANCE, scores.get(0).getScoreType());
         assertEquals(9, scores.get(0).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.TWOS, scores.get(1).getScoreType());
@@ -90,7 +92,7 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.FULL_HOUSE, score.getScoreType());
-        assertEquals(Rules.getFullHouseScoreValue(), score.getScoreValue());
+        Assert.assertEquals(Rules.getFullHouseScoreValue(), score.getScoreValue());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
 
 import org.junit.Test;
 

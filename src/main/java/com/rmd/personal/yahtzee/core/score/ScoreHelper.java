@@ -1,4 +1,7 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
+
+import com.rmd.personal.yahtzee.core.Rules;
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

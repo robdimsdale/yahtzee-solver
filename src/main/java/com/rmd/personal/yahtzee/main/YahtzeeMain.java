@@ -1,7 +1,7 @@
 package com.rmd.personal.yahtzee.main;
 
-import com.rmd.personal.yahtzee.core.ScoreCalculator;
-import com.rmd.personal.yahtzee.core.ScoreHelper;
+import com.rmd.personal.yahtzee.core.score.ScoreCalculator;
+import com.rmd.personal.yahtzee.core.score.ScoreHelper;
 
 public final class YahtzeeMain {
 

@@ -1,4 +1,4 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
 
 public class Score implements Comparable<Score> {
 

@@ -1,4 +1,6 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
+
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
 
 public class ScoreTableKey {
     private DiceRoll diceRoll;

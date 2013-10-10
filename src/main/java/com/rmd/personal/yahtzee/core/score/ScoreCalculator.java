@@ -1,4 +1,6 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.score;
+
+import com.rmd.personal.yahtzee.core.Rules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
