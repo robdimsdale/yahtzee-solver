@@ -51,14 +51,14 @@ public final class DiceRollTransitionCalculator {
     }
 
     private double sumPathsAtCurrentBranch(int maxN, int remainingRolls) {
+        remainingRolls--;
+        if (remainingRolls == 0 || maxN == 0) {
+            return 1.0;
+        }
+
         DiceRollTransitionTableKey key = new DiceRollTransitionTableKey(maxN, remainingRolls);
         if (getCachedTransitions().containsKey(key)) {
             return getCachedTransitions().get(key);
-        }
-
-        remainingRolls--;
-        if (remainingRolls == 0) {
-            return 1.0;
         }
 
         double returnValue = 0.0;
