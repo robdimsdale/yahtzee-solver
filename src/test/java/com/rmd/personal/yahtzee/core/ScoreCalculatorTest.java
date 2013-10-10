@@ -21,15 +21,17 @@ public class ScoreCalculatorTest {
 
     @Test
     public void throwsExceptionForNullDiceValues() {
+        // Arrange
+        int[] diceValues = null;
+
         // Act & Assert
         try {
-            scoreCalculator.calculateScoreValues(null);
+            scoreCalculator.calculateScoreValues(diceValues);
+            fail();
         } catch (IllegalArgumentException e) {
             // Assert
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
@@ -40,12 +42,11 @@ public class ScoreCalculatorTest {
         // Act & Assert
         try {
             scoreCalculator.calculateScoreValues(diceValues);
+            fail();
         } catch (IllegalArgumentException e) {
             // Assert
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
@@ -55,12 +56,11 @@ public class ScoreCalculatorTest {
         // Act & Assert
         try {
             scoreCalculator.calculateScoreValues(diceValues);
+            fail();
         } catch (IllegalArgumentException e) {
             // Assert
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test

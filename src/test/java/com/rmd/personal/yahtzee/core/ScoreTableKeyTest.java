@@ -1,8 +1,5 @@
 package com.rmd.personal.yahtzee.core;
 
-import com.rmd.personal.yahtzee.core.DiceRoll;
-import com.rmd.personal.yahtzee.core.ScoreTableKey;
-import com.rmd.personal.yahtzee.core.ScoreType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -31,8 +28,11 @@ public class ScoreTableKeyTest {
 
     @Test
     public void equalsReturnsFalseForNullOther() {
+        // Arrange
+        Object other = null;
+
         // Act & Assert
-        assertFalse(key.equals(null));
+        assertFalse(key.equals(other));
     }
 
     @Test

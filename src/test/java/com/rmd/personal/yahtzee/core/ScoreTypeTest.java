@@ -10,44 +10,40 @@ public class ScoreTypeTest {
     public void getFromIntThrowsExceptionForZero() {
         try {
             ScoreType.getSingleCountFromInt(0);
+            fail();
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
     public void getSingleCountFromIntThrowsExceptionForSeven() {
         try {
             ScoreType.getSingleCountFromInt(7); // SUPPRESS CHECKSTYLE magicNumber
+            fail();
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
     public void getXOfAKindFromIntThrowsExceptionFor2() {
         try {
             ScoreType.getXOfAKindFromInt(2);
+            fail();
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
     public void getXOfAKindFromIntThrowsExceptionFor6() {
         try {
             ScoreType.getXOfAKindFromInt(6); // SUPPRESS CHECKSTYLE magicNumber
+            fail();
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test

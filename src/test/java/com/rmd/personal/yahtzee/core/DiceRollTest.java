@@ -27,8 +27,11 @@ public class DiceRollTest {
 
     @Test
     public void equalsReturnsFalseForNullOther() {
+        // Arrange
+        Object nullObject = null;
+
         // Act & Assert
-        assertFalse(diceRoll.equals(null));
+        assertFalse(diceRoll.equals(nullObject));
     }
 
     @Test

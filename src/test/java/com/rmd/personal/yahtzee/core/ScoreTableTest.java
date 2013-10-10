@@ -29,10 +29,10 @@ public class ScoreTableTest {
     @Test
     public void keySetReturnsCorrectly() {
         // Arrange
-        Set<ScoreTableKey> expectedKeyset = new HashSet<ScoreTableKey>();
+        Set<ScoreTableKey> expectedKeys = new HashSet<ScoreTableKey>();
         ScoreTableKey otherKey = new ScoreTableKey(key.getDiceRoll(), ScoreType.TWOS);
-        expectedKeyset.add(key);
-        expectedKeyset.add(otherKey);
+        expectedKeys.add(key);
+        expectedKeys.add(otherKey);
 
         // Act
         scoreTable.put(key, 1);
@@ -40,7 +40,7 @@ public class ScoreTableTest {
         Set<ScoreTableKey> keySet = scoreTable.keySet();
 
         // Assert
-        assertEquals(expectedKeyset, keySet);
+        assertEquals(expectedKeys, keySet);
     }
 
     @Test

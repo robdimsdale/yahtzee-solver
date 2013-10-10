@@ -84,8 +84,7 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <phase>process-sources</phase>
-          </execution>
+            <phase>process-sources</phase>          </execution>
         </executions>
       </plugin>
 

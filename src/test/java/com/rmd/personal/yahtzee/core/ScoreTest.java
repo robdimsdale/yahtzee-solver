@@ -10,13 +10,16 @@ public class ScoreTest {
 
     @Test
     public void compareToThrowsNullPointerExceptionForNullOther() {
+        // Arrange
+        Score other = null;
+
+        // Act & Assert
         try {
-            score.compareTo(null);
+            score.compareTo(other);
+            fail();
         } catch (NullPointerException e) {
             assertNotNull(e);
-            return;
         }
-        fail();
     }
 
     @Test
@@ -50,8 +53,11 @@ public class ScoreTest {
 
     @Test
     public void equalsReturnsFalseForNullOther() {
+        // Arrange
+        Object other = null;
+
         // Act & Assert
-        assertFalse(score.equals(null));
+        assertFalse(score.equals(other));
     }
 
     @Test
