@@ -1,4 +1,6 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.diceroll;
+
+import com.rmd.personal.yahtzee.core.Rules;
 
 import java.util.Arrays;
 

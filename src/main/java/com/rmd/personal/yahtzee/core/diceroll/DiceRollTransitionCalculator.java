@@ -1,4 +1,9 @@
-package com.rmd.personal.yahtzee.core;
+package com.rmd.personal.yahtzee.core.diceroll;
+
+import com.rmd.personal.yahtzee.core.Rules;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.*;
 
@@ -8,11 +13,21 @@ public final class DiceRollTransitionCalculator {
 
     private static final DiceRollTransitionCalculator INSTANCE = new DiceRollTransitionCalculator();
 
+    private static Map<DiceRollTransitionTableKey, Double> cachedTransitions;
+
+    static {
+        cachedTransitions = new HashMap<DiceRollTransitionTableKey, Double>();
+    }
+
     private DiceRollTransitionCalculator() {
     }
 
     public static DiceRollTransitionCalculator getInstance() {
         return INSTANCE;
+    }
+
+    private static Map<DiceRollTransitionTableKey, Double> getCachedTransitions() {
+        return cachedTransitions;
     }
 
     public double getTransitionProbability(DiceRoll current, DiceRoll next, int remainingRolls) {
@@ -36,6 +51,11 @@ public final class DiceRollTransitionCalculator {
     }
 
     private double sumPathsAtCurrentBranch(int maxN, int remainingRolls) {
+        DiceRollTransitionTableKey key = new DiceRollTransitionTableKey(maxN, remainingRolls);
+        if (getCachedTransitions().containsKey(key)) {
+            return getCachedTransitions().get(key);
+        }
+
         remainingRolls--;
         if (remainingRolls == 0) {
             return 1.0;
@@ -47,6 +67,8 @@ public final class DiceRollTransitionCalculator {
             double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
             returnValue += factor * sumPathsAtCurrentBranch(i, remainingRolls);
         }
+
+        getCachedTransitions().put(key, returnValue);
 
         return returnValue;
     }
