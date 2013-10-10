@@ -5,7 +5,6 @@ import static java.lang.Math.*;
 public final class DiceRollTransitionCalculator {
 
     private static final double P = 1 / (double) Rules.getDieFaceCount();
-    private static final int X = Rules.getDieFaceCount();
 
     private static final DiceRollTransitionCalculator INSTANCE = new DiceRollTransitionCalculator();
 
@@ -19,62 +18,36 @@ public final class DiceRollTransitionCalculator {
     public double getTransitionProbability(DiceRoll current, DiceRoll next, int remainingRolls) {
         final int maxN = countDifferent(current, next);
 
+        // We are already where we want to be so probability of getting this is 1.
+        // (This wouldn't be true if you weren't allowed to 'skip' rolls
+        // i.e. if you always had to roll the maximum number of times).
         if (maxN == 0) {
             return 1.0;
         }
 
+        // If we have no rolls remaining then it's impossible to transition to anything else.
         if (remainingRolls == 0) {
             return 0.0;
         }
 
-        double summedProbability;
-        if (Rules.getDiceRollsCount() == 1) {
-            summedProbability = 1.0;
-        } else {
-            final int currentDepth = 0;
-            summedProbability = sumProbabilityAtCurrentBranch(maxN, remainingRolls, currentDepth);
-        }
+        double summedPaths = sumPathsAtCurrentBranch(maxN, remainingRolls);
 
-        return summedProbability * pow(P, maxN);
+        return summedPaths * pow(P, maxN);
     }
 
-    private double sumProbabilityAtCurrentBranch(int maxN, int remainingRolls, int currentDepth) {
-        currentDepth++;
-        double returnValue = 0.0;
-
-        if (currentDepth >= remainingRolls) {
+    private double sumPathsAtCurrentBranch(int maxN, int remainingRolls) {
+        remainingRolls--;
+        if (remainingRolls == 0) {
             return 1.0;
         }
 
+        double returnValue = 0.0;
+
         for (int i = 0; i <= maxN; i++) {
             double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
-            double subSum = sumProbabilityAtCurrentBranch(i, remainingRolls, currentDepth);
-            returnValue += factor * subSum;
+            returnValue += factor * sumPathsAtCurrentBranch(i, remainingRolls);
         }
 
-        return returnValue;
-    }
-
-    private double probabilityForTwoRemaining(int maxN) {
-        double returnValue = 0.0;
-        for (int i = 0; i <= maxN; i++) {
-            double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
-            returnValue += factor;
-        }
-        return returnValue;
-    }
-
-    private double probabilityForThreeRemaining(int maxN) {
-        double returnValue = 0.0;
-        for (int i = 0; i <= maxN; i++) {
-            double factorI = pow(1 - P, i) * binomialCoefficient(maxN, i);
-            double sumJ = 0.0;
-            for (int j = 0; j <= i; j++) {
-                double factorJ = pow(1 - P, j) * binomialCoefficient(i, j);
-                sumJ += factorJ;
-            }
-            returnValue += factorI * sumJ;
-        }
         return returnValue;
     }
 
