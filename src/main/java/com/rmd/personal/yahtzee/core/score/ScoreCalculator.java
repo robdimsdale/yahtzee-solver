@@ -1,7 +1,5 @@
 package com.rmd.personal.yahtzee.core.score;
 
-import com.rmd.personal.yahtzee.core.Rules;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,18 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.rmd.personal.yahtzee.core.Rules;
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
+
 public final class ScoreCalculator {
 
-    private static final ScoreCalculator INSTANCE = new ScoreCalculator();
+    public List<Score> calculateScoreValues(DiceRoll diceRoll) {
+        if (diceRoll == null) {
+            throw new IllegalArgumentException("DiceRoll must be non-null.");
+        }
 
-    private ScoreCalculator() {
-    }
+        int[] diceValues = diceRoll.getDiceValues();
 
-    public static ScoreCalculator getInstance() {
-        return INSTANCE;
-    }
-
-    public List<Score> calculateScoreValues(int... diceValues) {
         if (diceValues == null || diceValues.length != Rules.getNumberOfDice()) {
             throw new IllegalArgumentException("must have " + Rules.getNumberOfDice() + " dice values!");
         }

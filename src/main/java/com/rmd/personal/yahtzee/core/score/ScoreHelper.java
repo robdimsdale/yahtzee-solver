@@ -1,24 +1,32 @@
 package com.rmd.personal.yahtzee.core.score;
 
-import com.rmd.personal.yahtzee.core.Rules;
-import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.rmd.personal.yahtzee.core.Rules;
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
+
 public final class ScoreHelper {
 
-    private static final ScoreHelper INSTANCE = new ScoreHelper();
+    private static final ScoreHelper INSTANCE;
 
-    private static Map<DiceRoll, Integer> possibleDiceRollsMappedToFrequency;
-    private static ScoreTable scoreTable;
-    private static Map<ScoreType, Double> averagesTable;
-    private static Map<ScoreType, Double> averagesTableExcludingZeroScores;
+    private static final Map<DiceRoll, Integer> POSSIBLE_DICE_ROLLS_MAPPED_TO_FREQUENCY;
+    private static final ScoreTable SCORE_TABLE;
+    private static final Map<ScoreType, Double> AVERAGES_TABLE;
+    private static final Map<ScoreType, Double> AVERAGES_TABLE_EXCLUDING_ZERO_SCORES;
+
+    static {
+        POSSIBLE_DICE_ROLLS_MAPPED_TO_FREQUENCY = new LinkedHashMap<DiceRoll, Integer>();
+        SCORE_TABLE = new ScoreTable();
+        AVERAGES_TABLE = new HashMap<ScoreType, Double>();
+        AVERAGES_TABLE_EXCLUDING_ZERO_SCORES = new HashMap<ScoreType, Double>();
+
+        INSTANCE = new ScoreHelper();
+    }
 
     private ScoreHelper() {
-        initializeStaticFields();
         populatePossibleDiceValues();
         populateScoreTable();
         populateAveragesTables();
@@ -29,30 +37,23 @@ public final class ScoreHelper {
     }
 
     private ScoreCalculator getScoreCalculator() {
-        return ScoreCalculator.getInstance();
+        return new ScoreCalculator();
     }
 
     public static Map<DiceRoll, Integer> getPossibleDiceRollsMappedToFrequency() {
-        return possibleDiceRollsMappedToFrequency;
+        return POSSIBLE_DICE_ROLLS_MAPPED_TO_FREQUENCY;
     }
 
     public static ScoreTable getScoreTable() {
-        return scoreTable;
+        return SCORE_TABLE;
     }
 
     public static Map<ScoreType, Double> getAveragesTable() {
-        return averagesTable;
+        return AVERAGES_TABLE;
     }
 
     public static Map<ScoreType, Double> getAveragesTableExcludingZeroScores() {
-        return averagesTableExcludingZeroScores;
-    }
-
-    private static void initializeStaticFields() {
-        possibleDiceRollsMappedToFrequency = new LinkedHashMap<DiceRoll, Integer>();
-        scoreTable = new ScoreTable();
-        averagesTable = new HashMap<ScoreType, Double>();
-        averagesTableExcludingZeroScores = new HashMap<ScoreType, Double>();
+        return AVERAGES_TABLE_EXCLUDING_ZERO_SCORES;
     }
 
     private void populatePossibleDiceValues() {
@@ -81,7 +82,7 @@ public final class ScoreHelper {
 
     private void populateScoreTable() {
         for (DiceRoll diceRoll : getPossibleDiceRollsMappedToFrequency().keySet()) {
-            List<Score> scores = getScoreCalculator().calculateScoreValues(diceRoll.getDiceValues());
+            List<Score> scores = getScoreCalculator().calculateScoreValues(diceRoll);
             for (ScoreType scoreType : ScoreType.values()) {
                 Score score = getScoreByTypeFromScoreList(scores, scoreType);
                 if (score != null) {

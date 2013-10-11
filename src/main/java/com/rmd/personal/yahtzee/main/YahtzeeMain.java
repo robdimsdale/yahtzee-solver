@@ -1,6 +1,5 @@
 package com.rmd.personal.yahtzee.main;
 
-import com.rmd.personal.yahtzee.core.score.ScoreCalculator;
 import com.rmd.personal.yahtzee.core.score.ScoreHelper;
 
 public final class YahtzeeMain {
@@ -9,7 +8,6 @@ public final class YahtzeeMain {
 
     private YahtzeeMain() {
         // Eagerly instantiate the singleton classes.
-        ScoreCalculator.getInstance();
         ScoreHelper.getInstance();
         printHelper = new PrintHelper();
     }

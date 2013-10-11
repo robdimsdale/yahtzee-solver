@@ -1,22 +1,34 @@
 package com.rmd.personal.yahtzee.core.diceroll;
 
-import com.rmd.personal.yahtzee.core.Rules;
-
 import java.util.Arrays;
+
+import com.rmd.personal.yahtzee.core.Rules;
 
 public class DiceRoll {
 
     private int[] diceValues = new int[Rules.getNumberOfDice()];
 
+    /**
+     * @throws IllegalArgumentException if diceValues is null.
+     * @param diceValues int[]
+     */
     public DiceRoll(int[] diceValues) {
         this.setDiceValues(diceValues);
     }
 
+    /**
+     * Guaranteed to be non-null, but not guaranteed to be non-empty.
+     * @return int[]
+     */
     public int[] getDiceValues() {
         return Arrays.copyOf(diceValues, diceValues.length);
     }
 
+
     private void setDiceValues(int[] diceValues) {
+        if (diceValues == null) {
+            throw new IllegalArgumentException("Dice values must be non-null");
+        }
         this.diceValues = Arrays.copyOf(diceValues, diceValues.length);
     }
 
@@ -50,5 +62,10 @@ public class DiceRoll {
             hashCode += effectiveHashMultiplier * diceValue;
         }
         return hashCode;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.getDiceValues());
     }
 }

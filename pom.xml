@@ -21,6 +21,9 @@
 
     <skipFindbugs>false</skipFindbugs>
     <skipCoverage>false</skipCoverage>
+
+    <!--<mainClass.location>${project.groupId}.${project.artifactId}.main.YahtzeeMain</mainClass.location>-->
+    <mainClass.location>${project.groupId}.${project.artifactId}.main.RollChooserMain</mainClass.location>
   </properties>
 
   <dependencies>
@@ -95,7 +98,7 @@
         <configuration>
           <skip>${skipCoverage}</skip>
           <excludes>
-            <exclude>**/Main.class</exclude>
+            <exclude>**/main/*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -153,7 +156,7 @@
           <archive>
             <index>true</index>
             <manifest>
-              <mainClass>${project.groupId}.${project.artifactId}.main.YahtzeeMain</mainClass>
+              <mainClass>${mainClass.location}</mainClass>
             </manifest>
           </archive>
         </configuration>

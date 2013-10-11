@@ -1,22 +1,22 @@
 package com.rmd.personal.yahtzee.core.diceroll;
 
-import com.rmd.personal.yahtzee.core.Rules;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.rmd.personal.yahtzee.core.Rules;
 
 import static java.lang.Math.*;
 
 public final class DiceRollTransitionCalculator {
 
-    private static final double P = 1 / (double) Rules.getDieFaceCount();
-
-    private static final DiceRollTransitionCalculator INSTANCE = new DiceRollTransitionCalculator();
-
-    private static Map<DiceRollTransitionTableKey, Double> cachedTransitions;
+    private static final DiceRollTransitionCalculator INSTANCE;
+    private static final double P;
+    private static final Map<DiceRollTransitionTableKey, Double> CACHED_TRANSITIONS;
 
     static {
-        cachedTransitions = new HashMap<DiceRollTransitionTableKey, Double>();
+        INSTANCE = new DiceRollTransitionCalculator();
+        CACHED_TRANSITIONS = new HashMap<DiceRollTransitionTableKey, Double>();
+        P = 1 / (double) Rules.getDieFaceCount();
     }
 
     private DiceRollTransitionCalculator() {
@@ -27,7 +27,7 @@ public final class DiceRollTransitionCalculator {
     }
 
     private static Map<DiceRollTransitionTableKey, Double> getCachedTransitions() {
-        return cachedTransitions;
+        return CACHED_TRANSITIONS;
     }
 
     public double getTransitionProbability(DiceRoll current, DiceRoll next, int remainingRolls) {

@@ -1,5 +1,7 @@
 package com.rmd.personal.yahtzee.core.diceroll;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -68,5 +70,30 @@ public class DiceRollTest {
 
         // Act & Assert
         assertFalse(diceRoll.equals(other));
+    }
+
+    @Test
+    public void constructorThrowsExceptionForNullDiceValues() {
+        // Arrange
+        final int[] diceValues = null;
+
+        // Act & Assert
+        try {
+            new DiceRoll(diceValues);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // Assert
+            assertNotNull(e);
+        }
+    }
+
+    @Test
+    public void toStringReturnsDiceValues() {
+        // Act
+        String returned = diceRoll.toString();
+
+        // Assert
+        final String expected = Arrays.toString(diceRoll.getDiceValues());
+        assertEquals(expected, returned);
     }
 }

@@ -1,34 +1,44 @@
 package com.rmd.personal.yahtzee.core.score;
 
+import java.util.List;
+
 import com.rmd.personal.yahtzee.core.Rules;
+import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ScoreCalculatorTest {
 
-    private ScoreCalculator scoreCalculator = ScoreCalculator.getInstance();
+    private ScoreCalculator scoreCalculator = new ScoreCalculator();
 
     @Test
-    public void isSingleton() {
-        // Act
-        ScoreCalculator sameInstance = ScoreCalculator.getInstance();
+    public void throwsExceptionForNullDiceRoll() {
+        // Arrange
+        DiceRoll diceRoll = null;
 
-        // Assert
-        assertEquals(scoreCalculator, sameInstance);
+        // Act & Assert
+        try {
+            scoreCalculator.calculateScoreValues(diceRoll);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // Assert
+            assertNotNull(e);
+        }
     }
 
     @Test
     public void throwsExceptionForNullDiceValues() {
         // Arrange
-        int[] diceValues = null;
+        // By default a mock will return null for any method returning an object,
+        // therefore we don't need to explicitly set the behavior of the mock.
+        DiceRoll diceRoll = mock(DiceRoll.class);
 
         // Act & Assert
         try {
-            scoreCalculator.calculateScoreValues(diceValues);
+            scoreCalculator.calculateScoreValues(diceRoll);
             fail();
         } catch (IllegalArgumentException e) {
             // Assert
@@ -39,11 +49,11 @@ public class ScoreCalculatorTest {
     @Test
     public void throwsExceptionForEmptyDiceValues() {
         // Arrange
-        int[] diceValues = new int[]{};
+        DiceRoll diceRoll = new DiceRoll(new int[]{});
 
         // Act & Assert
         try {
-            scoreCalculator.calculateScoreValues(diceValues);
+            scoreCalculator.calculateScoreValues(diceRoll);
             fail();
         } catch (IllegalArgumentException e) {
             // Assert
@@ -54,10 +64,11 @@ public class ScoreCalculatorTest {
     @Test
     public void throwsExceptionForMoreThanFiveDiceValues() {
         // Arrange
-        int[] diceValues = {1, 2, 1, 2, 1, 2};
+        DiceRoll diceRoll = new DiceRoll(new int[] {1, 2, 1, 2, 1, 2});
+
         // Act & Assert
         try {
-            scoreCalculator.calculateScoreValues(diceValues);
+            scoreCalculator.calculateScoreValues(diceRoll);
             fail();
         } catch (IllegalArgumentException e) {
             // Assert
@@ -68,7 +79,7 @@ public class ScoreCalculatorTest {
     @Test
     public void returnsScoresInOrderForEqualNumberOfSpecificDiceValues() {
         // Act
-        List<Score> scores = scoreCalculator.calculateScoreValues(1, 1, 2, 2, 3); // SUPPRESS CHECKSTYLE magicNumber
+        List<Score> scores = scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 1, 2, 2, 3})); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
@@ -88,7 +99,7 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesFullHouseWhenValid() {
         // Act
-        Score score = (scoreCalculator.calculateScoreValues(1, 2, 1, 2, 2)).get(0);
+        Score score = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 2, 1, 2, 2}))).get(0);
 
         // Assert
         assertEquals(ScoreType.FULL_HOUSE, score.getScoreType());
@@ -98,8 +109,8 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesLongStraightWhenValid() {
         // Act
-        Score score1 = (scoreCalculator.calculateScoreValues(1, 2, 3, 4, 5)).get(0); // SUPPRESS CHECKSTYLE magicNumber
-        Score score2 = (scoreCalculator.calculateScoreValues(6, 3, 4, 5, 2)).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score1 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 2, 3, 4, 5}))).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score2 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{6, 3, 4, 5, 2}))).get(0); // SUPPRESS CHECKSTYLE magicNumber
 
         // Assert
         assertEquals(ScoreType.LONG_STRAIGHT, score1.getScoreType());
@@ -112,9 +123,9 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesShortStraightWhenValid() {
         // Act
-        Score score1 = (scoreCalculator.calculateScoreValues(1, 2, 3, 4, 6)).get(0); // SUPPRESS CHECKSTYLE magicNumber
-        Score score2 = (scoreCalculator.calculateScoreValues(1, 3, 4, 5, 6)).get(0); // SUPPRESS CHECKSTYLE magicNumber
-        Score score3 = (scoreCalculator.calculateScoreValues(1, 2, 3, 3, 4)).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score1 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 2, 3, 4, 6}))).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score2 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 3, 4, 5, 6}))).get(0); // SUPPRESS CHECKSTYLE magicNumber
+        Score score3 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{1, 2, 3, 3, 4}))).get(0); // SUPPRESS CHECKSTYLE magicNumber
 
         // Assert
         assertEquals(ScoreType.SHORT_STRAIGHT, score1.getScoreType());
@@ -130,7 +141,7 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesYahtzeeWhenValid() {
         // Act
-        Score score = (scoreCalculator.calculateScoreValues(2, 2, 2, 2, 2)).get(0);
+        Score score = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{2, 2, 2, 2, 2}))).get(0);
 
         // Assert
         assertEquals(ScoreType.YAHTZEE, score.getScoreType());
@@ -140,8 +151,8 @@ public class ScoreCalculatorTest {
     @Test
     public void returnedScoresIncludesFourOfAKindWhenValid() {
         // Act
-        Score score1 = (scoreCalculator.calculateScoreValues(2, 2, 2, 1, 2)).get(1);
-        Score score2 = (scoreCalculator.calculateScoreValues(3, 2, 2, 2, 2)).get(1); // SUPPRESS CHECKSTYLE magicNumber
+        Score score1 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{2, 2, 2, 1, 2}))).get(1);
+        Score score2 = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{3, 2, 2, 2, 2}))).get(1); // SUPPRESS CHECKSTYLE magicNumber
 
         // Assert
         assertEquals(ScoreType.FOUR_OF_A_KIND, score1.getScoreType());
@@ -154,7 +165,7 @@ public class ScoreCalculatorTest {
     @Test
     public void validYahtzeeIncludesYahtzeeAndFourOfAKindAndThreeOfAKind() {
         // Act
-        List<Score> scores = (scoreCalculator.calculateScoreValues(2, 2, 2, 2, 2));
+        List<Score> scores = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{2, 2, 2, 2, 2})));
 
         // Assert
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
@@ -178,7 +189,7 @@ public class ScoreCalculatorTest {
     @Test
     public void validFullHouseIncludesThreeOfAKind() {
         // Act
-        List<Score> scores = (scoreCalculator.calculateScoreValues(2, 1, 2, 2, 1));
+        List<Score> scores = (scoreCalculator.calculateScoreValues(new DiceRoll(new int[]{2, 1, 2, 2, 1})));
 
         // Assert
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber

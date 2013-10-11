@@ -1,6 +1,7 @@
 package com.rmd.personal.yahtzee.core.diceroll;
 
 public class DiceRollTransitionTableKey {
+
     private int maxN;
     private int remainingRolls;
 
