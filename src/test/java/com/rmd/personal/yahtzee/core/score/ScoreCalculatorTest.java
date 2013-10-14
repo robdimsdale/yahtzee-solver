@@ -4,13 +4,15 @@ import java.util.List;
 
 import com.rmd.personal.yahtzee.core.Rules;
 import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ScoreCalculatorTest {
+
+    // Set the delta for the tests to be extremely small (e.g. 1 in 1 million million).
+    private final double delta = 1 / 1000000000000.0; // SUPPRESS CHECKSTYLE magicNumber
 
     private ScoreCalculator scoreCalculator = new ScoreCalculator();
 
@@ -83,17 +85,17 @@ public class ScoreCalculatorTest {
 
         assertEquals(4, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
-        Assert.assertEquals(ScoreType.CHANCE, scores.get(0).getScoreType());
-        assertEquals(9, scores.get(0).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(ScoreType.CHANCE, scores.get(0).getScoreType());
+        assertEquals(9, scores.get(0).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.TWOS, scores.get(1).getScoreType());
-        assertEquals(4, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(4, scores.get(1).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.THREES, scores.get(2).getScoreType());
-        assertEquals(3, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(3, scores.get(2).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.ONES, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(2, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(2, scores.get(3).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
     }
 
     @Test
@@ -103,7 +105,7 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.FULL_HOUSE, score.getScoreType());
-        Assert.assertEquals(Rules.getFullHouseScoreValue(), score.getScoreValue());
+        assertEquals(Rules.getFullHouseScoreValue(), score.getScoreValue(), delta);
     }
 
     @Test
@@ -114,10 +116,10 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.LONG_STRAIGHT, score1.getScoreType());
-        assertEquals(Rules.getLongStraightScoreValue(), score1.getScoreValue());
+        assertEquals(Rules.getLongStraightScoreValue(), score1.getScoreValue(), delta);
 
         assertEquals(ScoreType.LONG_STRAIGHT, score2.getScoreType());
-        assertEquals(Rules.getLongStraightScoreValue(), score2.getScoreValue());
+        assertEquals(Rules.getLongStraightScoreValue(), score2.getScoreValue(), delta);
     }
 
     @Test
@@ -129,13 +131,13 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.SHORT_STRAIGHT, score1.getScoreType());
-        assertEquals(Rules.getShortStraightScoreValue(), score1.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score1.getScoreValue(), delta);
 
         assertEquals(ScoreType.SHORT_STRAIGHT, score2.getScoreType());
-        assertEquals(Rules.getShortStraightScoreValue(), score2.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score2.getScoreValue(), delta);
 
         assertEquals(ScoreType.SHORT_STRAIGHT, score3.getScoreType());
-        assertEquals(Rules.getShortStraightScoreValue(), score3.getScoreValue());
+        assertEquals(Rules.getShortStraightScoreValue(), score3.getScoreValue(), delta);
     }
 
     @Test
@@ -145,7 +147,7 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.YAHTZEE, score.getScoreType());
-        assertEquals(Rules.getYahtzeeInitialScoreValue(), score.getScoreValue());
+        assertEquals(Rules.getYahtzeeInitialScoreValue(), score.getScoreValue(), delta);
     }
 
     @Test
@@ -156,10 +158,10 @@ public class ScoreCalculatorTest {
 
         // Assert
         assertEquals(ScoreType.FOUR_OF_A_KIND, score1.getScoreType());
-        assertEquals(9, score1.getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(9, score1.getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.FOUR_OF_A_KIND, score2.getScoreType());
-        assertEquals(11, score2.getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(11, score2.getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
     }
 
     @Test
@@ -171,19 +173,19 @@ public class ScoreCalculatorTest {
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.YAHTZEE, scores.get(0).getScoreType());
-        assertEquals(Rules.getYahtzeeInitialScoreValue(), scores.get(0).getScoreValue());
+        assertEquals(Rules.getYahtzeeInitialScoreValue(), scores.get(0).getScoreValue(), delta);
 
         assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
-        assertEquals(10, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(10, scores.get(1).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.TWOS, scores.get(2).getScoreType());
-        assertEquals(10, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(10, scores.get(2).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.FOUR_OF_A_KIND, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(10, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(10, scores.get(3).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(10, scores.get(4).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(10, scores.get(4).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
     }
 
     @Test
@@ -195,18 +197,35 @@ public class ScoreCalculatorTest {
         assertEquals(5, scores.size()); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.FULL_HOUSE, scores.get(0).getScoreType());
-        assertEquals(Rules.getFullHouseScoreValue(), scores.get(0).getScoreValue());
+        assertEquals(Rules.getFullHouseScoreValue(), scores.get(0).getScoreValue(), delta);
 
         assertEquals(ScoreType.CHANCE, scores.get(1).getScoreType());
-        assertEquals(8, scores.get(1).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(8, scores.get(1).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.THREE_OF_A_KIND, scores.get(2).getScoreType());
-        assertEquals(8, scores.get(2).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(8, scores.get(2).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.TWOS, scores.get(3).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(6, scores.get(3).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(6, scores.get(3).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
 
         assertEquals(ScoreType.ONES, scores.get(4).getScoreType()); // SUPPRESS CHECKSTYLE magicNumber
-        assertEquals(2, scores.get(4).getScoreValue()); // SUPPRESS CHECKSTYLE magicNumber
+        assertEquals(2, scores.get(4).getScoreValue(), delta); // SUPPRESS CHECKSTYLE magicNumber
+    }
+
+    @Test
+    public void getExpectedScoreForSingleTypesReturnsCorrectly() {
+        // Act
+        final List<Score> returned = scoreCalculator.getExpectedScoreForSingleTypes();
+
+        // Assert
+        final int expectedLength = 6;
+        final double expectedScore
+                = Rules.getNumberOfDice()
+                * ScoreCalculator.P
+                * (3 - 3 * ScoreCalculator.P + ScoreCalculator.P * ScoreCalculator.P);
+        assertEquals(expectedLength, returned.size());
+        for (int i = 0; i < expectedLength; i++) {
+            assertEquals(expectedScore * (i + 1), returned.get(i).getScoreValue(), delta);
+        }
     }
 }

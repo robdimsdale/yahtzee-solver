@@ -2,19 +2,19 @@ package com.rmd.personal.yahtzee.core.score;
 
 public class Score implements Comparable<Score> {
 
-    private int scoreValue;
+    private double scoreValue;
     private ScoreType scoreType;
 
-    public Score(ScoreType scoreType, int scoreValue) {
+    public Score(ScoreType scoreType, double scoreValue) {
         this.setScoreType(scoreType);
         this.setScoreValue(scoreValue);
     }
 
-    public int getScoreValue() {
+    public double getScoreValue() {
         return scoreValue;
     }
 
-    public void setScoreValue(int scoreValue) {
+    public void setScoreValue(double scoreValue) {
         this.scoreValue = scoreValue;
     }
 
@@ -46,7 +46,8 @@ public class Score implements Comparable<Score> {
     @Override
     public int hashCode() {
         final int effectiveHashMultiplier = 37;
-        return effectiveHashMultiplier * getScoreType().hashCode() + getScoreValue();
+        return effectiveHashMultiplier * getScoreType().hashCode()
+                + (int) (effectiveHashMultiplier * effectiveHashMultiplier * getScoreValue());
     }
 
     @Override

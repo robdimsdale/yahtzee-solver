@@ -3,6 +3,7 @@ package com.rmd.personal.yahtzee.core.diceroll;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rmd.personal.yahtzee.core.Common;
 import com.rmd.personal.yahtzee.core.Rules;
 
 import static java.lang.Math.*;
@@ -64,7 +65,7 @@ public final class DiceRollTransitionCalculator {
         double returnValue = 0.0;
 
         for (int i = 0; i <= maxN; i++) {
-            double factor = pow(1 - P, i) * binomialCoefficient(maxN, i);
+            double factor = pow(1 - P, i) * Common.binomialCoefficient(maxN, i);
             returnValue += factor * sumPathsAtCurrentBranch(i, remainingRolls);
         }
 
@@ -81,23 +82,5 @@ public final class DiceRollTransitionCalculator {
             }
         }
         return different;
-    }
-
-    private int binomialCoefficient(int n, int k) {
-        int numerator = factorial(n);
-        int denominator = factorial(k) * factorial(n - k);
-        return numerator / denominator;
-    }
-
-    private int factorial(int i) {
-        if (i == 0) {
-            return 1;
-        }
-
-        int factorial = 1;
-        while (i-- > 0) {
-            factorial += factorial * i;
-        }
-        return factorial;
     }
 }

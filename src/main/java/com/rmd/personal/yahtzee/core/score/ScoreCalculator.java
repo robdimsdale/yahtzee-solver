@@ -9,10 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.rmd.personal.yahtzee.core.Common;
 import com.rmd.personal.yahtzee.core.Rules;
 import com.rmd.personal.yahtzee.core.diceroll.DiceRoll;
 
 public final class ScoreCalculator {
+
+    protected static final double P;
+
+    static {
+        P = 1 / (double) Rules.getDieFaceCount();
+    }
 
     public List<Score> calculateScoreValues(DiceRoll diceRoll) {
         if (diceRoll == null) {
@@ -190,5 +197,23 @@ public final class ScoreCalculator {
 
     private Score chanceScore(int[] diceValues) {
         return new Score(ScoreType.CHANCE, sumAllDiceValues(diceValues));
+    }
+
+    public List<Score> getExpectedScoreForSingleTypes() {
+        List<Score> scores = new ArrayList<Score>();
+        double expectedScore = 0;
+        for (int r = 1; r <= Rules.getDiceRollsCount(); r++) {
+            double currentScore = Common.binomialCoefficient(Rules.getDiceRollsCount(), r);
+            currentScore *= Math.pow(-1, r - 1);
+            currentScore *= Math.pow(P, r);
+            expectedScore += currentScore;
+        }
+        expectedScore *= Rules.getNumberOfDice();
+
+        for (int i = 1; i <= Rules.getDieFaceCount(); i++) {
+            scores.add(new Score(ScoreType.getSingleCountFromInt(i), i * expectedScore));
+        }
+
+        return scores;
     }
 }
